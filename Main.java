@@ -14,7 +14,7 @@ class Main {
     while (isContinue.equals("y")) {
       showMenu();
       int selectedMenu = chooseMenu();
-
+    try {
       if (selectedMenu == 1) {
         showBooks();
       } else if (selectedMenu == 2) {
@@ -29,9 +29,11 @@ class Main {
       } else if (selectedMenu == 6){
         addBook();
       } else {
-        System.out.println("wrong input");
+        throw new IllegalArgumentException("wrong input");
       }
-
+    } catch (Exception e){
+        System.out.println("Error "+ e.getMessage());
+      }
       System.out.print("continue ? ");
       isContinue = scan.next();
     }
@@ -91,11 +93,12 @@ class Main {
 
   public static void showBooks() {
     for (Book book : library.books) {
-      System.out.println(book.id + " " + book.id);
+      System.out.println(book.id + " " + book.title);
     }
   }
 
   public static void showMembers() {
+
     for (Member member : library.members) {
       System.out.println(member.id + " " + member.name);
     }

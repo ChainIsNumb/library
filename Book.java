@@ -3,5 +3,4 @@ abstract class Book{
   public String title;
 
   public abstract void addbook(Book book);
-  
 }

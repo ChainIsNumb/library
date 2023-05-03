@@ -7,7 +7,7 @@ class library extends Book{
   public String id;
   
   public void addbook(Book book){
-    if (!isMemberIdExist(book.id)) {
+    if (!isBookIdExist(book.id)) {
       this.books.add(book);
       System.out.println("Book added successfully.");
   } else {
@@ -45,22 +45,22 @@ class library extends Book{
     return isExist;
   }
 
-  public void giveBook(String bookId, String memberId) {
-    Book book = this.getBookById(bookId);
+  public void giveBook(String memberId, String bookId) {
+    Book book = this.getBookById(bookId, books);
     this.books.remove(book);
 
     Member member = this.getMemberById(memberId);
     int memberIndex = this.getMemberIndex(member);
-    this.members.get(memberIndex).borrowedBooks.add(book);
+    this.members.get(memberIndex).receiveBook(book);
   }
 
-  public void receiveBook(String bookId, String memberId) {
-    Book book = this.getBookById(bookId);
-    this.books.add(book);
-
+  public void receiveBook(String memberId, String bookId) {
     Member member = this.getMemberById(memberId);
     int memberIndex = this.getMemberIndex(member);
-    this.members.get(memberIndex).borrowedBooks.remove(book);
+    
+    Book book = this.getBookById(bookId, member.borrowedBooks);
+    this.books.add(book);
+    this.members.get(memberIndex).giveBook(book);
   }
 
   private int getMemberIndex(Member member) {
@@ -76,8 +76,8 @@ class library extends Book{
     return null;
   }
 
-  private Book getBookById(String id) {
-    for (Book book : this.books) {
+  private Book getBookById(String id, ArrayList<Book> List) {
+    for (Book book : List) {
       if (book.id.equals(id)) {
         return book;
       }
